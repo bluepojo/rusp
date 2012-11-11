@@ -49,6 +49,21 @@ RUSP
         exp = Proc.new { |x| ['define', x, ['quote', 'abc']] }
         Rusp.execute(['begin', exp.call('a'), exp.call('b'), exp.call('c')]).should == 'abc'
       end
+
+      it "should read numbers" do
+        Rusp.execute(['define', 'a', '123'])
+        Rusp.env['a'].should == 123
+      end
+
+      it "should read floats" do
+        Rusp.execute(['define', 'a', '123.5'])
+        Rusp.env['a'].should == 123.5
+      end
+
+      it "should read negative numbers" do
+        Rusp.execute(['define', 'a', '-123.5'])
+        Rusp.env['a'].should == -123.5
+      end
     end
   end
 

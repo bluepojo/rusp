@@ -1,4 +1,5 @@
 require "rusp/errors"
+require 'rusp/core_ext'
 
 module Rusp
   
@@ -40,11 +41,16 @@ module Rusp
       return list
     end
 
+    # TODO: refactor.
     def execute(list)
       ret = case list.first
             when "define"
               _, binding, value = list
-              env[binding] = execute(value)
+              env[binding] = if value.is_a?(String) && value.numeric?
+                               value.to_f
+                             else
+                               execute(value)
+                             end
             when "quote"
               _, quoted = list
               quoted
