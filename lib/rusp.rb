@@ -52,16 +52,16 @@ module Rusp
               _, lambda = list
               {lambda: lambda}
             when "print"
-              # TODO FIXME
-              pp list
               _, printable = list
               puts execute(printable)
-            when Hash
-              execute(list.first[:lambda])
             else
-              binding = env[list.first]
-              raise SymbolUndefinedError if binding.nil?
-              binding
+              if list.is_a? Hash
+                execute(list[:lambda])
+              else
+                binding = env[list.first]
+                raise SymbolUndefinedError, "#{list.first} is undefined." if binding.nil?
+                execute(binding)
+              end
             end
       ret
     end

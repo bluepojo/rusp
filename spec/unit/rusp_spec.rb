@@ -26,9 +26,8 @@ RUSP
         -> { Rusp.execute(['a', 'b']) }.should raise_error(Rusp::SymbolUndefinedError)
       end
 
-      it "should store lambdas" do
+      it "should store lambdas", focus: true do
         Rusp.execute(['define', 'a', ['lambda', ['print', ['quote', 'hi']]]])
-        Rusp.execute(['a'])
         Rusp.env.should == {"a" => {lambda: ['print', ['quote', 'hi']]}}
       end
     end
