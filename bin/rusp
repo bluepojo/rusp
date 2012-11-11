@@ -1,0 +1,13 @@
+$LOAD_PATH.unshift File.join(File.dirname(__FILE__), '..', 'lib')
+
+require 'thor'
+require 'rusp'
+
+class RuspCli < Thor
+  desc "rusp FILENAME", "provide a rusp file to execute"
+  def execute(rusp_file)
+    Rusp.execute_file(rusp_file)
+  end
+end
+
+RuspCli.start

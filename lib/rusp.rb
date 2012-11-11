@@ -14,7 +14,7 @@ module Rusp
       rusp.each_char do |char|
         case char
         when LPAREN
-          appendable = list.last || list
+          appendable = (depth == 0) ? list : list.last
           (depth - 1).times do
             appendable = appendable.last
           end
@@ -51,6 +51,11 @@ module Rusp
             when "lambda"
               _, lambda = list
               {lambda: lambda}
+            when "begin"
+              list[1..list.size-1].each do |exp|
+                execute(exp)
+              end
+              execute(list.last)
             when "print"
               _, printable = list
               puts execute(printable)
@@ -64,6 +69,11 @@ module Rusp
               end
             end
       ret
+    end
+
+    def execute_file(filename)
+      exps = Rusp.parse(File.read(filename))
+      exps.each { |exp| execute(exp) }
     end
 
     def env
